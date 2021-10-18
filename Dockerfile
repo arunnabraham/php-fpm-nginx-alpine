@@ -8,7 +8,6 @@ FROM php:7.4-fpm-alpine
 RUN apk add --update \
 #        openrc \
         nginx \
-        dhclient \
         curl \
         wget \
         php7-dev    \
@@ -29,7 +28,6 @@ RUN apk add --update \
 # RUN touch /run/openrc/softlevel
 #rc-service networking restart
 RUN wget -P /etc/ssl/certs/ http://curl.haxx.se/ca/cacert.pem && chmod 744 /etc/ssl/certs/cacert.pem
-RUN apk del wget git openssh-client 
 # install php extensions
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -47,14 +45,22 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 # RUN mkdir /run/openrc \
 #  && touch /run/openrc/softlevel
-
+RUN rm /usr/local/bin/install-php-extensions
 WORKDIR /var/www/claritymulti.com
 COPY ./nginx-conf/claritymulti.com /etc/nginx/http.d/default.conf
 COPY ./app /var/www/claritymulti.com
 COPY ./entrypoint/server-run.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/server-run.sh
+
 # RUN rc-update add nginx default
 # VOLUME [ "/sys/fs/cgroup" ]
+
+# Remove all installer dependencies
+RUN apk del wget git openssh-client libjpeg-turbo-dev libpng-dev libxml2-dev libzip-dev imagemagick-dev $PHPIZE_DEPS php7-dev pecl
+
+# Clean caches and tmps
+#    rm -rf /var/cache/apk/* && \
+#    rm -rf /tmp/*
 
 EXPOSE 80
  CMD [ "/usr/local/bin/server-run.sh"]
