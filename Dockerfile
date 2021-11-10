@@ -46,9 +46,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 # RUN mkdir /run/openrc \
 #  && touch /run/openrc/softlevel
 RUN rm /usr/local/bin/install-php-extensions
-WORKDIR /var/www/claritymulti.com
-COPY ./nginx-conf/claritymulti.com /etc/nginx/http.d/default.conf
-COPY ./app /var/www/claritymulti.com
+WORKDIR /var/www/site.com
+COPY ./nginx-conf/site.com.conf /etc/nginx/http.d/default.conf
+COPY ./app /var/www/site.com
 COPY ./entrypoint/server-run.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/server-run.sh
 
