@@ -1,7 +1,7 @@
 server {
     listen         80 default_server;
     listen         [::]:80 default_server;
-    root           /var/www/claritymulti.com;
+    root           /var/www/site;
     index          index.html index.php;
 
   location ~* \.php$ {
