@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.1-fpm-alpine
 # @see https://hub.docker.com/r/jpswade/php7.4-fpm-alpine
 
 # Install gd, iconv, mbstring, mysql, soap, sockets, zip, and zlib extensions
